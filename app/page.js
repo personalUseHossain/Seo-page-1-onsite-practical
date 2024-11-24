@@ -191,7 +191,6 @@ const LeadsTable = () => {
           </tbody>
         </table>
       </div>
-      {/* Pagination Controls */}
       // Pagination Controls
       <div className="flex justify-center items-center mt-6 mb-20 space-x-2">
         <button
@@ -205,7 +204,6 @@ const LeadsTable = () => {
         </button>
 
         <div className="flex gap-2">
-          {/* Show previous pages */}
           {currentPage > 3 && (
             <>
               <button
