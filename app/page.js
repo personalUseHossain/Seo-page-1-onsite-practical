@@ -119,7 +119,6 @@ const LeadsTable = () => {
           alt="Settings Icon"
         />
       </div>
-
       {/* Modal for column visibility */}
       {modalOpen && (
         <div className="absolute top-15 right-10 bg-white shadow-lg p-4 z-10">
@@ -147,7 +146,6 @@ const LeadsTable = () => {
           </div>
         </div>
       )}
-
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-300">
           <thead>
@@ -193,9 +191,9 @@ const LeadsTable = () => {
           </tbody>
         </table>
       </div>
-
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-6 space-x-2">
+      // Pagination Controls
+      <div className="flex justify-center items-center mt-6 mb-20 space-x-2">
         <button
           className={`px-4 py-2 rounded-lg text-white bg-blue-500 hover:bg-blue-600 transition-all duration-300 ${
             currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
@@ -206,21 +204,54 @@ const LeadsTable = () => {
           Prev
         </button>
 
-        <div
-          className="flex gap-2"
-          style={{ overflowX: "auto", whiteSpace: "nowrap" }}
-        >
-          {[...Array(Math.ceil(totalPosts / postsPerPage))].map((_, index) => (
-            <button
-              key={index}
-              className={`px-4 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-blue-100 transition-all duration-300 ${
-                currentPage === index + 1 ? "bg-blue-500 text-white" : ""
-              }`}
-              onClick={() => paginate(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
+        <div className="flex gap-2">
+          {/* Show previous pages */}
+          {currentPage > 3 && (
+            <>
+              <button
+                className="px-4 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-blue-100 transition-all duration-300"
+                onClick={() => paginate(1)}
+              >
+                1
+              </button>
+              <span className="px-4 py-2 text-gray-700">...</span>
+            </>
+          )}
+
+          {/* Display the current page and surrounding pages */}
+          {[...Array(Math.ceil(totalPosts / postsPerPage))].map((_, index) => {
+            const pageNumber = index + 1;
+            if (
+              pageNumber >= currentPage - 1 &&
+              pageNumber <= currentPage + 1
+            ) {
+              return (
+                <button
+                  key={pageNumber}
+                  className={`px-4 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-blue-100 transition-all duration-300 ${
+                    currentPage === pageNumber ? "bg-blue-500 text-white" : ""
+                  }`}
+                  onClick={() => paginate(pageNumber)}
+                >
+                  {pageNumber}
+                </button>
+              );
+            }
+            return null;
+          })}
+
+          {/* Show next pages */}
+          {currentPage < Math.ceil(totalPosts / postsPerPage) - 2 && (
+            <>
+              <span className="px-4 py-2 text-gray-700">...</span>
+              <button
+                className="px-4 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-blue-100 transition-all duration-300"
+                onClick={() => paginate(Math.ceil(totalPosts / postsPerPage))}
+              >
+                {Math.ceil(totalPosts / postsPerPage)}
+              </button>
+            </>
+          )}
         </div>
 
         <button
@@ -235,7 +266,6 @@ const LeadsTable = () => {
           Next
         </button>
       </div>
-
       <LeadChart leadsData={leads} />
     </div>
   );
