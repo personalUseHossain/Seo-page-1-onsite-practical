@@ -28,7 +28,7 @@ const Column = ({ column, index, moveColumn, isVisible }) => {
     isVisible && (
       <th
         ref={(node) => drag(drop(node))}
-        className="border px-4 py-2 cursor-move"
+        className="border px-6 py-3 cursor-move text-left"
       >
         {column.label}
       </th>
@@ -49,7 +49,7 @@ const LeadsTable = () => {
     { id: "project_link", label: "Project Link" },
     { id: "bidding_time", label: "Bidding Time" },
     { id: "actual_value", label: "Actual Value" },
-    { id: "status", label: "Status" },
+    { id: "deal_status", label: "Status" },
     { id: "added_by", label: "Added By" },
   ]);
   const [columnVisibility, setColumnVisibility] = useState(
@@ -172,9 +172,19 @@ const LeadsTable = () => {
                     columnVisibility[column.id] && (
                       <td
                         key={column.id}
-                        className="border border-gray-300 px-4 py-2"
+                        className={`border border-gray-300 px-6 py-3 ${
+                          column.id === "deal_status"
+                            ? lead.deal_status === 1
+                              ? "bg-green-500 text-white"
+                              : "bg-red-500 text-white"
+                            : ""
+                        }`}
                       >
-                        {lead[column.id] || "N/A"}
+                        {column.id === "deal_status"
+                          ? lead.deal_status === 1
+                            ? "Converted to Deal"
+                            : "Not Converted to Deal"
+                          : lead[column.id] || "N/A"}
                       </td>
                     )
                 )}
